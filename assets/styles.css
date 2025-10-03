@@ -1,38 +1,125 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: "ROF";
+  src: url("/assets/fonts/ROF.ttf") format("truetype");
+  font-display: swap;
+}
+
 html,
 body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background: #0b1220;
-  color: #fff;
-  font-family: sans-serif;
+  background: radial-gradient(ellipse at center, #1a2332 0%, #0a0f1a 100%);
+  color: #f4f1e8;
+  font-family: ROF, "Cinzel", serif;
 }
 
-/* Overlay */
+/* ===============================
+   MEDIEVAL OVERLAY
+=============================== */
 #overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: #000;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(26, 15, 8, 0.95) 0%,
+      rgba(0, 0, 0, 0.98) 70%
+    ),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><defs><pattern id="grain" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="0.5" fill="%23d4af37" opacity="0.1"/></pattern></defs><rect width="60" height="60" fill="url(%23grain)"/></svg>');
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: opacity 0.5s ease;
 }
+
 #overlay.hidden {
   display: none;
 }
+
 #overlay span {
-  font: 800 2.5rem sans-serif;
-  color: #fff;
+  font-weight: 700;
+  font-size: 3rem;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.8),
+    0 0 20px rgba(212, 175, 55, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.8);
+  animation: ancientPulse 2s ease-in-out infinite alternate;
+  position: relative;
 }
 
-/* Controls */
+#overlay span::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+#overlay span::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #d4af37, transparent);
+  animation: shimmer 3s ease-in-out infinite reverse;
+}
+
+@keyframes ancientPulse {
+  0% {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.8),
+      0 0 20px rgba(212, 175, 55, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 15px rgba(212, 175, 55, 1),
+      0 0 30px rgba(212, 175, 55, 0.8), 0 0 40px rgba(255, 215, 0, 0.6),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateX(-50%) scaleX(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===============================
+   MEDIEVAL CONTROLS
+=============================== */
 .controls {
   position: fixed;
   top: 20px;
@@ -40,59 +127,177 @@ body {
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
+
 .volume-control,
 .github-link {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: #0009;
-  padding: 8px;
-  border-radius: 12px;
+  gap: 12px;
+  background: linear-gradient(
+    145deg,
+    rgba(26, 15, 8, 0.9),
+    rgba(42, 24, 16, 0.9)
+  );
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  padding: 10px 12px;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
 }
+
+.volume-control:hover,
+.github-link:hover {
+  border-color: rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
 .volume-control img,
 .github-link img {
-  width: 28px;
+  width: 32px;
   cursor: pointer;
+  filter: brightness(0.9) sepia(1) hue-rotate(35deg) saturate(1.2);
+  transition: all 0.3s ease;
 }
+
+.volume-control img:hover,
+.github-link img:hover {
+  filter: brightness(1.2) sepia(1) hue-rotate(35deg) saturate(1.5);
+  transform: scale(1.1);
+}
+
 .volume-bar {
   max-width: 0;
   overflow: hidden;
   opacity: 0;
-  transition: 0.3s;
-}
-.volume-control:hover .volume-bar {
-  max-width: 150px;
-  opacity: 1;
-}
-.volume-bar input {
-  width: 150px;
+  transition: all 0.4s ease;
 }
 
-/* Back button */
+.volume-control:hover .volume-bar {
+  max-width: 160px;
+  opacity: 1;
+}
+
+.volume-bar input {
+  width: 160px;
+  height: 6px;
+  background: linear-gradient(to right, #2a1810, #1a0f08);
+  border: 1px solid #d4af37;
+  border-radius: 3px;
+  outline: none;
+  appearance: none;
+}
+
+.volume-bar input::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, #ffd700, #d4af37);
+  border: 2px solid #8b7355;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.volume-bar input::-webkit-slider-thumb:hover {
+  background: radial-gradient(circle, #ffed4a, #ffd700);
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+/* ===============================
+   MEDIEVAL BACK BUTTON
+=============================== */
 .back-btn {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1001;
-  background: #0009;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: 700;
+  background: linear-gradient(145deg, #8b0000, #4a0000);
+  color: #f4f1e8;
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  padding: 12px 18px;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
   display: none;
-}
-.back-btn.show {
-  display: block;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(8px);
 }
 
-/* Map */
+.back-btn.show {
+  display: block;
+  animation: slideInFromRight 0.4s ease;
+}
+
+.back-btn:hover {
+  background: linear-gradient(145deg, #dc143c, #8b0000);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  transform: translateY(-3px) scale(1.05);
+  border-color: #ffd700;
+}
+
+.back-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===============================
+   ENHANCED MAP CONTAINER
+=============================== */
 .map-container {
   position: fixed;
   inset: 0;
+  background: radial-gradient(
+      ellipse at 20% 30%,
+      rgba(212, 175, 55, 0.02) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 70%,
+      rgba(65, 105, 225, 0.02) 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse at 50% 50%, #1a2332 0%, #0a0f1a 100%);
+}
+
+.map-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="1" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/></filter></defs><rect width="200" height="200" filter="url(%23noise)" opacity="0.03"/></svg>');
+  pointer-events: none;
+  animation: subtleFloat 20s ease-in-out infinite;
+}
+
+@keyframes subtleFloat {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.03;
+  }
+  50% {
+    transform: translateY(-2px) rotate(0.1deg);
+    opacity: 0.05;
+  }
 }
 #got-map {
   width: 100%;
@@ -103,123 +308,866 @@ body {
   transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/* ===============================
+   MEDIEVAL ISLAND STYLING
+=============================== */
+
 .land {
-  fill: #d1c7a3;
-  stroke: #2f2a1f;
-  stroke-width: 3;
   cursor: pointer;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  transition: all 0.4s ease;
 }
+
+.land-main {
+  stroke: #3d2f1f;
+  stroke-width: 2;
+}
+
+.coastline {
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.about-island .land-main {
+  stroke: #4a3c2a;
+  stroke-width: 3;
+}
+
+.projects-island .land-main {
+  stroke: #2f2a1f;
+  stroke-width: 4;
+}
+
+.contact-island .land-main {
+  stroke: #1f1f1f;
+  stroke-width: 3;
+}
+
 .region:hover .land {
-  filter: drop-shadow(0 0 10px #991b1b);
+  filter: drop-shadow(0 0 15px #d4af37)
+    drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.7));
+}
+
+.about-island:hover .land-main {
+  filter: drop-shadow(0 0 20px #4169e1)
+    drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.7));
+}
+
+.projects-island:hover .land-main {
+  filter: drop-shadow(0 0 20px #dc143c)
+    drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.7));
+}
+
+.contact-island:hover .land-main {
+  filter: drop-shadow(0 0 20px #2e2e2e)
+    drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.7));
 }
 
 .region-label {
-  font: 800 46px sans-serif;
-  fill: #fff;
-  stroke: #000;
-  stroke-width: 3;
+  font-weight: 700;
+  font-size: 24px;
+  fill: #f4f1e8;
+  stroke: #1a1a1a;
+  stroke-width: 2;
   text-anchor: middle;
   pointer-events: none;
-}
-.poi-label {
-  font: 700 14px sans-serif;
-  fill: #fff;
-  text-shadow: 0 1px 3px #000;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* Modal (Projects cities) */
+.medieval-font {
+  font-weight: 600;
+  font-size: 22px;
+  fill: #d4af37;
+  stroke: #000;
+  stroke-width: 1.5;
+}
+
+.city {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.city:hover use {
+  animation: cityGlow 0.8s ease-in-out infinite alternate;
+}
+
+.stronghold:hover use {
+  animation: strongholdGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes cityGlow {
+  0% {
+    filter: drop-shadow(0 0 5px #d4af37);
+  }
+  100% {
+    filter: drop-shadow(0 0 15px #d4af37) drop-shadow(0 0 10px #ffd700)
+      brightness(1.1);
+  }
+}
+
+@keyframes strongholdGlow {
+  0% {
+    filter: drop-shadow(0 0 8px #8b0000);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #8b0000) drop-shadow(0 0 12px #dc143c)
+      brightness(1.1);
+  }
+}
+
+.poi-label {
+  font-weight: 600;
+  font-size: 12px;
+  fill: #f4f1e8;
+  filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.9));
+  text-transform: capitalize;
+  pointer-events: none;
+  transform: none !important;
+  transition: none !important;
+}
+
+.medieval-text {
+  font-weight: 600;
+  fill: #d4af37;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9));
+  pointer-events: none;
+  transform: none !important;
+  transition: none !important;
+}
+
+.city:hover .poi-label,
+.city:hover .medieval-text {
+  transform: none !important;
+}
+
+.region.active .land {
+  filter: drop-shadow(0 0 25px #d4af37) drop-shadow(0 0 35px #ffd700);
+  animation: ancientGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes ancientGlow {
+  0% {
+    filter: drop-shadow(0 0 25px #d4af37) drop-shadow(0 0 35px #ffd700);
+  }
+  100% {
+    filter: drop-shadow(0 0 30px #d4af37) drop-shadow(0 0 45px #ffd700)
+      drop-shadow(0 0 55px #ffed4a);
+  }
+}
+
+/* ===============================
+   MEDIEVAL MODAL STYLING
+=============================== */
 .modal {
   position: fixed;
   inset: 0;
-  background: #000c;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
   display: none;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   z-index: 1002;
-  overflow-y: scroll;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+  padding: 20px 0;
 }
 .modal.open {
   display: flex;
 }
 .modal-content {
-  background: #1e293b;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
+  background: linear-gradient(145deg, #2a1810 0%, #1a0f08 100%);
+  border: 3px solid #d4af37;
+  border-radius: 8px;
+  padding: 30px;
+  max-width: 700px;
   width: 90%;
-  color: #fff;
+  color: #f4f1e8;
   position: relative;
-}
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-}
-#modal-title {
-  font: 700 24px sans-serif;
-  margin-bottom: 10px;
-}
-#modal-body {
-  font: 500 16px sans-serif;
-}
-#modal-body img {
-  margin-top: 10px;
-  max-width: 100%;
-  border-radius: 6px;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin: 20px auto;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
-/* Info Panel (About/Contact) */
+.modal-content::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(145deg, #8b0000, #4a0000);
+  color: #f4f1e8;
+  border: 2px solid #d4af37;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: linear-gradient(145deg, #dc143c, #8b0000);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  transform: scale(1.1);
+}
+
+#modal-title {
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 10px;
+}
+
+#modal-body {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #f4f1e8;
+}
+
+#modal-body img {
+  margin: 15px 0;
+  max-width: 100%;
+  border: 2px solid #d4af37;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+#modal-body p {
+  margin-bottom: 15px;
+}
+
+#modal-body strong {
+  color: #d4af37;
+  font-weight: 600;
+}
+
+#modal-body a {
+  color: #4169e1;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+#modal-body a:hover {
+  color: #6495ed;
+  text-shadow: 0 0 5px rgba(65, 105, 225, 0.5);
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #1a0f08;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+
+/* ===============================
+   MEDIEVAL INFO PANEL
+=============================== */
 .info-panel {
   position: fixed;
   top: 0;
   right: 0;
   height: 100%;
-  width: 400px;
-  background: #111827;
+  width: 450px;
+  background: linear-gradient(to left, #1a0f08 0%, #2a1810 100%);
+  border-left: 4px solid #d4af37;
   transform: translateX(100%);
-  transition: 0.4s ease;
+  transition: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 1003;
-  padding: 20px;
+  padding: 30px;
   overflow-y: auto;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
 }
+
+.info-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(212, 175, 55, 0.05) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(212, 175, 55, 0.05) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
+}
+
 .info-panel.open {
   transform: translateX(0);
 }
+
 .panel-close {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #000;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(145deg, #8b0000, #4a0000);
+  color: #f4f1e8;
+  border: 2px solid #d4af37;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-}
-#panel-title {
-  font: 700 28px sans-serif;
-  margin-bottom: 10px;
-}
-#panel-body section {
-  margin-bottom: 20px;
-}
-#panel-body h3 {
-  margin-bottom: 6px;
-  font-size: 18px;
   font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.panel-close:hover {
+  background: linear-gradient(145deg, #dc143c, #8b0000);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  transform: scale(1.1);
+}
+
+#panel-title {
+  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 25px;
+  margin-top: 20px;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  border-bottom: 3px solid #d4af37;
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+#panel-body {
+  color: #f4f1e8;
+  line-height: 1.7;
+  position: relative;
+}
+
+#panel-body section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+#panel-body section:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#panel-body h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 #panel-body ul {
   list-style: none;
   padding-left: 0;
 }
+
 #panel-body li {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+  font-size: 16px;
+}
+
+#panel-body li::before {
+  content: "⚔";
+  position: absolute;
+  left: 0;
+  color: #d4af37;
+  font-size: 14px;
+}
+
+#panel-body p {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+#panel-body a {
+  color: #4169e1;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#panel-body a:hover {
+  color: #6495ed;
+  text-shadow: 0 0 5px rgba(65, 105, 225, 0.5);
+}
+
+.info-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.info-panel::-webkit-scrollbar-track {
+  background: #1a0f08;
+}
+
+.info-panel::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 4px;
+}
+
+.info-panel::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+
+/* ===============================
+   MEDIA QUERIES
+=============================== */
+
+/* Tablettes en mode paysage et petits ordinateurs portables (1024px et moins) */
+@media screen and (max-width: 1024px) {
+  .info-panel {
+    width: 400px;
+  }
+  
+  .modal-content {
+    max-width: 600px;
+    width: 95%;
+    padding: 25px;
+  }
+  
+  .region-label {
+    font-size: 20px;
+  }
+  
+  .medieval-font {
+    font-size: 18px;
+  }
+}
+
+/* Tablettes en mode portrait (768px et moins) */
+@media screen and (max-width: 768px) {
+  #overlay span {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
+  }
+  
+  .controls {
+    top: 15px;
+    left: 15px;
+    gap: 12px;
+  }
+  
+  .volume-control,
+  .github-link {
+    padding: 8px 10px;
+  }
+  
+  .volume-control img,
+  .github-link img {
+    width: 28px;
+  }
+  
+  .volume-control:hover .volume-bar {
+    max-width: 120px;
+  }
+  
+  .volume-bar input {
+    width: 120px;
+  }
+  
+  .back-btn {
+    top: 15px;
+    right: 15px;
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+  
+  .info-panel {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .panel-close {
+    top: 15px;
+    left: 15px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  #panel-title {
+    font-size: 28px;
+    margin-top: 50px;
+    text-align: left;
+  }
+  
+  #panel-body section {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  #panel-body h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+  #panel-body p,
+  #panel-body li {
+    font-size: 15px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+    margin: 10px auto;
+    max-height: calc(100vh - 20px);
+  }
+  
+  .modal-close {
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  #modal-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    margin-right: 35px;
+  }
+  
+  #modal-body {
+    font-size: 15px;
+  }
+  
+  .region-label {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+  
+  .medieval-font {
+    font-size: 16px;
+  }
+  
+  .poi-label {
+    font-size: 11px;
+  }
+}
+
+/* Smartphones en mode paysage (667px et moins) */
+@media screen and (max-width: 667px) {
+  #overlay span {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .controls {
+    top: 10px;
+    left: 10px;
+    gap: 10px;
+  }
+  
+  .volume-control,
+  .github-link {
+    padding: 6px 8px;
+  }
+  
+  .volume-control img,
+  .github-link img {
+    width: 24px;
+  }
+  
+  .back-btn {
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  #panel-title {
+    font-size: 24px;
+  }
+  
+  #panel-body h3 {
+    font-size: 18px;
+  }
+  
+  #modal-title {
+    font-size: 20px;
+  }
+  
+  .region-label {
+    font-size: 16px;
+  }
+  
+  .medieval-font {
+    font-size: 14px;
+  }
+  
+  .poi-label {
+    font-size: 10px;
+  }
+}
+
+/* Smartphones en mode portrait (480px et moins) */
+@media screen and (max-width: 480px) {
+  #overlay span {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+  
+  #overlay span::before,
+  #overlay span::after {
+    width: 100px;
+  }
+  
+  .controls {
+    top: 8px;
+    left: 8px;
+    gap: 8px;
+  }
+  
+  .volume-control,
+  .github-link {
+    padding: 5px 6px;
+  }
+  
+  .volume-control img,
+  .github-link img {
+    width: 20px;
+  }
+  
+  .volume-control:hover .volume-bar {
+    max-width: 100px;
+  }
+  
+  .volume-bar input {
+    width: 100px;
+  }
+  
+  .back-btn {
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .info-panel {
+    padding: 15px;
+  }
+  
+  .panel-close {
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  #panel-title {
+    font-size: 20px;
+    margin-top: 40px;
+    letter-spacing: 1px;
+  }
+  
+  #panel-body section {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  #panel-body h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  #panel-body p,
+  #panel-body li {
+    font-size: 14px;
+  }
+  
+  .modal-content {
+    padding: 15px;
+    margin: 5px auto;
+  }
+  
+  .modal-close {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  #modal-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  
+  #modal-body {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .region-label {
+    font-size: 14px;
+  }
+  
+  .medieval-font {
+    font-size: 12px;
+  }
+  
+  .poi-label {
+    font-size: 9px;
+  }
+  
+  .medieval-text {
+    font-size: 9px;
+  }
+}
+
+/* Très petits écrans (360px et moins) */
+@media screen and (max-width: 360px) {
+  #overlay span {
+    font-size: 1.5rem;
+  }
+  
+  .controls {
+    top: 5px;
+    left: 5px;
+    gap: 6px;
+  }
+  
+  .volume-control img,
+  .github-link img {
+    width: 18px;
+  }
+  
+  .back-btn {
+    top: 5px;
+    right: 5px;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+  
+  #panel-title {
+    font-size: 18px;
+  }
+  
+  #panel-body h3 {
+    font-size: 15px;
+  }
+  
+  #panel-body p,
+  #panel-body li {
+    font-size: 13px;
+  }
+  
+  #modal-title {
+    font-size: 16px;
+  }
+  
+  #modal-body {
+    font-size: 13px;
+  }
+  
+  .region-label {
+    font-size: 12px;
+  }
+  
+  .medieval-font {
+    font-size: 10px;
+  }
+}
+
+/* Optimisations pour les écrans tactiles */
+@media (hover: none) and (pointer: coarse) {
+  .city,
+  .region {
+    cursor: default;
+  }
+  
+  .volume-control:hover .volume-bar {
+    max-width: 0;
+    opacity: 0;
+  }
+  
+  .volume-control.active .volume-bar {
+    max-width: 120px;
+    opacity: 1;
+  }
+  
+  .city:hover use,
+  .stronghold:hover use {
+    animation: none;
+  }
+  
+  .region:hover .land {
+    filter: initial;
+  }
+  
+  .land {
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+  }
+}
+
+/* Orientation paysage pour les mobiles */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  #overlay span {
+    font-size: 1.8rem;
+  }
+  
+  .info-panel {
+    width: 60%;
+    max-width: 400px;
+  }
+  
+  .modal-content {
+    max-height: 90vh;
+    width: 85%;
+    max-width: 500px;
+  }
+  
+  .controls {
+    top: 5px;
+    left: 5px;
+  }
+  
+  .back-btn {
+    top: 5px;
+    right: 5px;
+  }
 }
