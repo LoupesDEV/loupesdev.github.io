@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cyrex Realm — Mathéo</title>
+  <link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body>
+  <!-- Overlay -->
+  <div id="overlay" onclick="startMedia()">
+    <span>CLICK TO ENTER…</span>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="volume-control">
+      <img id="volume-icon" src="assets/vol_on.png" alt="Volume" onclick="toggleMute()"/>
+      <div class="volume-bar">
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVolume(this.value)"/>
+      </div>
+    </div>
+    <div class="github-link">
+      <a href="https://github.com/KucoDEV" target="_blank">
+        <img src="assets/github.png" alt="GitHub"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- Back button -->
+  <button id="back-btn" class="back-btn">⟵ Back</button>
+
+  <!-- Info Panel -->
+  <aside id="info-panel" class="info-panel">
+    <button id="panel-close" class="panel-close">✕</button>
+    <h2 id="panel-title"></h2>
+    <div id="panel-body"></div>
+  </aside>
+
+  <!-- Modal (Projects cities) -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <button id="modal-close" class="modal-close">✕</button>
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="map-container">
+    <svg id="got-map" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="sea" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="#182a5a"/>
+          <stop offset="100%" stop-color="#0b1220"/>
+        </radialGradient>
+        <g id="icon-city"><circle r="7" fill="#f8fafc" stroke="#111827" stroke-width="2"/></g>
+      </defs>
+
+      <rect x="0" y="0" width="1600" height="900" fill="url(#sea)"/>
+
+      <g id="panzoom" class="panzoom">
+        <!-- ABOUT ISLAND -->
+        <g class="region panel-region" data-key="about" data-title="ABOUT">
+          <path class="land" d="M250,500 C250,330 470,260 650,300 C800,330 880,460 850,600 C820,740 640,800 470,760 C300,720 250,640 250,500 Z"/>
+          <text class="region-label" x="520" y="480">ABOUT</text>
+        </g>
+
+        <!-- PROJECTS ISLAND -->
+        <g class="region" data-key="projects">
+          <path class="land" d="M900,250 C900,170 1080,120 1240,180 C1360,230 1380,350 1260,400 C1140,440 980,400 920,320 C900,300 900,280 900,250 Z"/>
+          <text class="region-label" x="1100" y="280">PROJECTS</text>
+
+          <g class="city" data-title="Project 1" data-content="<p>Placeholder Project 1</p><img src='https://via.placeholder.com/300x150?text=Project+1'/>" transform="translate(1020,330)">
+            <use href="#icon-city"/><text class="poi-label" x="12" y="-10">Project 1</text>
+          </g>
+          <g class="city" data-title="Project 2" data-content="<p>Placeholder Project 2</p><img src='https://via.placeholder.com/300x150?text=Project+2'/>" transform="translate(1150,340)">
+            <use href="#icon-city"/><text class="poi-label" x="12" y="-10">Project 2</text>
+          </g>
+          <g class="city" data-title="Project 3" data-content="<p>Placeholder Project 3</p><img src='https://via.placeholder.com/300x150?text=Project+3'/>" transform="translate(1060,380)">
+            <use href="#icon-city"/><text class="poi-label" x="12" y="-10">Project 3</text>
+          </g>
+          <g class="city" data-title="Project 4" data-content="<p>Placeholder Project 4</p><img src='https://via.placeholder.com/300x150?text=Project+4'/>" transform="translate(1200,310)">
+            <use href="#icon-city"/><text class="poi-label" x="12" y="-10">Project 4</text>
+          </g>
+        </g>
+
+        <!-- CONTACT ISLAND -->
+        <g class="region panel-region" data-key="contact" data-title="CONTACT">
+          <path class="land" d="M1100,600 C1100,500 1240,480 1360,520 C1450,560 1480,660 1400,720 C1320,780 1180,780 1120,720 C1100,700 1100,650 1100,600 Z"/>
+          <text class="region-label" x="1260" y="600">CONTACT</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Media -->
+  <audio id="background-audio" loop>
+    <source src="assets/background.mp3" type="audio/mpeg"/>
+  </audio>
+
+  <script src="assets/scripts.js"></script>
+</body>
+</html>
