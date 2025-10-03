@@ -31,6 +31,16 @@ if (volumeSlider)
     localStorage.setItem("vol", e.target.value);
   });
 
+// Gestion du volume sur mobile
+const volumeControl = document.querySelector('.volume-control');
+if (volumeControl && 'ontouchstart' in window) {
+  volumeControl.addEventListener('click', (e) => {
+    if (e.target === volumeControl || e.target === volumeIcon) {
+      volumeControl.classList.toggle('active');
+    }
+  });
+}
+
 /* =========================
    MAP / ZOOM
 ========================= */
@@ -58,7 +68,6 @@ function zoomToRegion(regionEl) {
   const bbox = regionEl.getBBox();
   const { scale, tx, ty } = computeZoomToBBox(bbox);
   panzoom.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
-  // Reveal island info AFTER the zoom finishes
   setTimeout(() => {
     regionEl.classList.add("active");
     activeRegion = regionEl;
@@ -71,23 +80,56 @@ function resetZoom() {
   if (activeRegion) activeRegion.classList.remove("active");
   activeRegion = null;
   backBtn.classList.remove("show");
+  closeInfoPanel();
 }
 
-/* Enable: clicking island zooms + reveals in-island info (About/Contact); 
-   Projects also zooms, and only then cities become clickable */
+const infoPanel = document.getElementById("info-panel");
+const panelTitle = document.getElementById("panel-title");
+const panelClose = document.getElementById("panel-close");
+const aboutContent = document.getElementById("about-content");
+const contactContent = document.getElementById("contact-content");
+
+function openInfoPanel(regionKey, title) {
+  panelTitle.textContent = title;
+
+  aboutContent.style.display = "none";
+  contactContent.style.display = "none";
+
+  if (regionKey === "about") {
+    aboutContent.style.display = "block";
+  } else if (regionKey === "contact") {
+    contactContent.style.display = "block";
+  }
+
+  infoPanel.classList.add("open");
+}
+
+function closeInfoPanel() {
+  infoPanel.classList.remove("open");
+}
+
+panelClose.addEventListener("click", closeInfoPanel);
+
 document.querySelectorAll(".region").forEach((region) => {
   region.addEventListener("click", () => {
-    // If already active -> do nothing (let Back handle zoom out)
     if (activeRegion === region) return;
-    // Reset current active region first
     if (activeRegion) {
       activeRegion.classList.remove("active");
     }
+
+    closeInfoPanel();
+    closeModal();
+
     zoomToRegion(region);
+
+    if (region.classList.contains("panel-region")) {
+      setTimeout(() => {
+        openInfoPanel(region.dataset.key, region.dataset.title);
+      }, 700);
+    }
   });
 });
 
-/* Cities: only clickable when Projects island is the active region */
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("modal-title");
 const modalBody = document.getElementById("modal-body");
@@ -112,7 +154,6 @@ document.querySelectorAll(".city").forEach((city) => {
 
 modalClose.addEventListener("click", closeModal);
 
-/* Global handlers */
 backBtn.addEventListener("click", () => {
   closeModal();
   resetZoom();
