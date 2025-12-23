@@ -1,55 +1,32 @@
 {
-	"homepage": "https://kucodev.github.io/",
-	"name": "kucodev.github.io",
-	"version": "0.1.0",
-	"private": false,
-	"dependencies": {
-		"@emailjs/browser": "^3.7.0",
-		"@emotion/react": "^11.10.4",
-		"@emotion/styled": "^11.10.4",
-		"@mui/icons-material": "^5.10.9",
-		"@mui/lab": "^5.0.0-alpha.104",
-		"@mui/material": "^5.10.10",
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^13.4.0",
-		"@testing-library/user-event": "^13.5.0",
-		"animate.css": "^4.1.1",
-		"framer-motion": "^10.16.4",
-		"react": "^18.2.0",
-		"react-axios": "^2.0.6",
-		"react-dom": "^18.2.0",
-		"react-icons": "^4.6.0",
-		"react-router-dom": "^6.4.2",
-		"react-scripts": "5.0.1",
-		"web-vitals": "^2.1.4"
-	},
-	"scripts": {
-		"start": "react-scripts start",
-		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
-	},
-	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 chrome version",
-			"last 1 firefox version",
-			"last 1 safari version"
-		]
-	},
-	"devDependencies": {
-		"gh-pages": "^5.0.0"
-	}
+  "name": "portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.555.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "vite": "^7.2.4"
+  }
 }
